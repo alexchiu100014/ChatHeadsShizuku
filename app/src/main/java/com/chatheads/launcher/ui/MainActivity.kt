@@ -168,6 +168,12 @@ class MainActivity : ComponentActivity() {
                     }
                 )
 
+                PermissionCard(
+                    title = "Freeform Service: ${if (FreeformLauncher.isReady) "Connected" else "Not Connected"}",
+                    granted = FreeformLauncher.isReady,
+                    onGrant = { FreeformLauncher.bindService() }
+                )
+
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
@@ -205,7 +211,8 @@ class MainActivity : ComponentActivity() {
                         },
                         modifier = Modifier.weight(1f),
                         enabled = !isRunning && selectedApps.isNotEmpty() &&
-                            Settings.canDrawOverlays(this@MainActivity)
+                            Settings.canDrawOverlays(this@MainActivity) &&
+                            status == ShizukuState.GRANTED
                     ) {
                         Icon(Icons.Default.PlayArrow, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
